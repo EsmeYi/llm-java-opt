@@ -1,4 +1,6 @@
 ## Original
+
+```
 Benchmark                                       Mode   Cnt    Score    Error   Units
 TopKBenchmark.benchmarkCalculateTopK           thrpt    25    0.004 ±  0.001  ops/ms
 TopKBenchmark.benchmarkCalculateTopK            avgt    25  246.100 ±  3.351   ms/op
@@ -12,8 +14,11 @@ TopKBenchmark.benchmarkCalculateTopK:p0.999   sample        434.029            m
 TopKBenchmark.benchmarkCalculateTopK:p0.9999  sample        434.110            ms/op
 TopKBenchmark.benchmarkCalculateTopK:p1.00    sample        434.110            ms/op
 TopKBenchmark.benchmarkCalculateTopK              ss     5  333.508 ± 55.024   ms/op
+```
 
 ## Improved by DeepSeek
+
+```
 Benchmark                                       Mode    Cnt   Score   Error   Units
 TopKBenchmark.benchmarkCalculateTopK           thrpt     25   0.276 ± 0.042  ops/ms
 TopKBenchmark.benchmarkCalculateTopK            avgt     25   4.062 ± 0.441   ms/op
@@ -27,8 +32,11 @@ TopKBenchmark.benchmarkCalculateTopK:p0.999   sample          5.366           ms
 TopKBenchmark.benchmarkCalculateTopK:p0.9999  sample         54.112           ms/op
 TopKBenchmark.benchmarkCalculateTopK:p1.00    sample         99.877           ms/op
 TopKBenchmark.benchmarkCalculateTopK              ss      5  17.988 ± 1.378   ms/op
+```
 
 ## Improved by developer
+
+```
 Benchmark                                       Mode    Cnt   Score    Error   Units
 TopKBenchmark.benchmarkCalculateTopK           thrpt     25   0.306 ±  0.015  ops/ms
 TopKBenchmark.benchmarkCalculateTopK            avgt     25   3.123 ±  0.302   ms/op
@@ -42,3 +50,4 @@ TopKBenchmark.benchmarkCalculateTopK:p0.999   sample          4.563            m
 TopKBenchmark.benchmarkCalculateTopK:p0.9999  sample         46.399            ms/op
 TopKBenchmark.benchmarkCalculateTopK:p1.00    sample         82.838            ms/op
 TopKBenchmark.benchmarkCalculateTopK              ss      5  18.345 ± 11.697   ms/op
+```

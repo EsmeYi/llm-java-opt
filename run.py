@@ -132,6 +132,7 @@ def recover_files():
     
 
 def run_pipeline():
+    compile_package()
     print(f"Running test and benchmark for original code...")
     run_test_benchmarks("before")
     
