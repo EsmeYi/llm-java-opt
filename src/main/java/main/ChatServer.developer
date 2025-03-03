@@ -1,0 +1,127 @@
+package main;
+
+import java.io.*;
+import java.net.*;
+import java.nio.*;
+import java.nio.channels.*;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class ChatServer {
+    private static final int PORT = 12345;
+    private static final List<ClientHandler> clients = new CopyOnWriteArrayList<>();
+    private static Selector selector;
+
+    public static void main(String[] args) {
+        try {
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.bind(new InetSocketAddress(PORT));
+            serverSocketChannel.configureBlocking(false);
+
+            selector = Selector.open();
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+            System.out.println("Chat server started on port " + PORT);
+
+            while (true) {
+                selector.select();
+
+                for (Iterator<SelectionKey> it = selector.selectedKeys().iterator(); it.hasNext(); ) {
+                    SelectionKey key = it.next();
+                    it.remove();
+
+                    if (key.isAcceptable()) {
+                        acceptClient(serverSocketChannel);
+                    } else if (key.isReadable()) {
+                        handleRead(key);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void acceptClient(ServerSocketChannel serverSocketChannel) throws IOException {
+        SocketChannel clientChannel = serverSocketChannel.accept();
+        clientChannel.configureBlocking(false);
+        clientChannel.register(selector, SelectionKey.OP_READ);
+
+        ClientHandler clientHandler = new ClientHandler(clientChannel);
+        clients.add(clientHandler);
+
+        System.out.println("New client connected: " + clientChannel.getRemoteAddress());
+    }
+
+    private static void handleRead(SelectionKey key) {
+        SocketChannel clientChannel = (SocketChannel) key.channel();
+        ClientHandler clientHandler = (ClientHandler) key.attachment();
+
+        try {
+            ByteBuffer buffer = ByteBuffer.allocate(256);
+            int bytesRead = clientChannel.read(buffer);
+
+            if (bytesRead == -1) {
+                // Client has closed the connection
+                System.out.println("Client disconnected: " + clientChannel.getRemoteAddress());
+                clientChannel.close();
+                clients.remove(clientHandler);
+                return;
+            }
+
+            buffer.flip();
+            byte[] messageBytes = new byte[buffer.remaining()];
+            buffer.get(messageBytes);
+            String message = new String(messageBytes);
+
+            System.out.println("Received: " + message);
+            broadcast(message, clientHandler);
+
+        } catch (IOException e) {
+            System.out.println("Error reading from client.");
+            try {
+                clientChannel.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+    public static synchronized void broadcast(String message, ClientHandler sender) {
+        for (ClientHandler client : clients) {
+            if (client != sender) {
+                client.sendMessage(message);
+            }
+        }
+    }
+
+    public static class ClientHandler {
+        private final SocketChannel socketChannel;
+        private final ByteBuffer writeBuffer;
+
+        public ClientHandler(SocketChannel socketChannel) {
+            this.socketChannel = socketChannel;
+            this.writeBuffer = ByteBuffer.allocate(256);
+        }
+
+        public void sendMessage(String message) {
+            try {
+                if (socketChannel.isOpen()) {  // Check if the channel is open before writing
+                    writeBuffer.clear();
+                    writeBuffer.put(message.getBytes());
+                    writeBuffer.flip();
+                    socketChannel.write(writeBuffer);
+                }
+            } catch (ClosedChannelException e) {
+                System.out.println("Attempted to write to a closed channel.");
+                try {
+                    socketChannel.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

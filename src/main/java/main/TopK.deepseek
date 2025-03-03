@@ -1,0 +1,46 @@
+package main;
+
+import java.util.*;
+
+public class TopK {
+
+    public static List<Long> calculateTopK(int k, long[] A, long[] B, long[] C) {
+
+        PriorityQueue<Long> abHeap = new PriorityQueue<>();
+
+        for (long a : A) {
+            for (long b : B) {
+                long sum = a + b;
+                if (abHeap.size() < k) {
+                    abHeap.offer(sum);
+                } else if (sum > abHeap.peek()) {
+                    abHeap.poll();
+                    abHeap.offer(sum);
+                }
+            }
+        }
+
+        List<Long> abTopK = new ArrayList<>(abHeap);
+        abTopK.sort(Collections.reverseOrder());
+
+        PriorityQueue<Long> abcHeap = new PriorityQueue<>();
+
+        for (long ab : abTopK) {
+            for (long c : C) {
+                long sum = ab + c;
+                if (abcHeap.size() < k) {
+                    abcHeap.offer(sum);
+                } else if (sum > abcHeap.peek()) {
+                    abcHeap.poll();
+                    abcHeap.offer(sum);
+                }
+            }
+        }
+
+        List<Long> result = new ArrayList<>(abcHeap);
+        result.sort(Collections.reverseOrder());
+
+        return result;
+    }
+
+}
