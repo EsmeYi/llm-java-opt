@@ -1,0 +1,22 @@
+package main;
+
+import java.io.*;
+
+public class FileIO {
+    public static void processFile(String inputFile, String outputFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+
+            String line;
+            int lineNumber = 1;
+
+            while ((line = reader.readLine()) != null) {
+                writer.write(line.trim() + " [" + lineNumber++ + "]");
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("File processing failed", e);
+        }
+    }
+}

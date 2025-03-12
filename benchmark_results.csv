@@ -1,0 +1,52 @@
+Category,Benchmark,Mode,Cnt,Score,Error,Units
+TopK (Algorithm),benchmarkCalculateTopK,thrpt,25,0.004,± 0.001,ops/ms
+TopK (Algorithm),benchmarkCalculateTopK,avgt,25,246.100,± 3.351,ms/op
+TopK (Algorithm),benchmarkCalculateTopK,sample,1003,251.652,± 3.131,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.00,sample,,213.910,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.50,sample,,240.124,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.90,sample,,296.223,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.95,sample,,313.524,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.99,sample,,351.609,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.999,sample,,434.029,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p0.9999,sample,,434.110,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK:p1.00,sample,,434.110,,ms/op
+TopK (Algorithm),benchmarkCalculateTopK,ss,5,333.508,± 55.024,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK,thrpt,25,0.276,± 0.042,ops/ms
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK,avgt,25,4.062,± 0.441,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK,sample,60889,4.104,± 0.010,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.00,sample,,3.604,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.50,sample,,4.182,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.90,sample,,4.227,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.95,sample,,4.309,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.99,sample,,4.792,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.999,sample,,5.366,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p0.9999,sample,,54.112,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK:p1.00,sample,,99.877,,ms/op
+TopK (Algorithm) DeepSeek,benchmarkCalculateTopK,ss,5,17.988,± 1.378,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK,thrpt,25,0.306,± 0.015,ops/ms
+TopK (Algorithm) developer,benchmarkCalculateTopK,avgt,25,3.123,± 0.302,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK,sample,76605,3.262,± 0.008,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.00,sample,,2.806,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.50,sample,,3.318,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.90,sample,,3.396,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.95,sample,,3.514,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.99,sample,,3.908,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.999,sample,,4.563,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p0.9999,sample,,46.399,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK:p1.00,sample,,82.838,,ms/op
+TopK (Algorithm) developer,benchmarkCalculateTopK,ss,5,18.345,± 11.697,ms/op
+ChatServer (Blocking I/O),testThroughput,thrpt,5,148.949,± 105.196,ops/s
+ChatServer (Blocking I/O) DeepSeek,testThroughput,thrpt,5,314.952,± 264.958,ops/s
+ChatServer (Blocking I/O) developer,testThroughput,thrpt,5,2626.791,± 1639.407,ops/s
+FileIO (ReadingFile),testLowEfficiencyFileIO,avgt,25,958.906,± 4.439,ms/op
+FileIO (ReadingFile) deepseek,testLowEfficiencyFileIO,avgt,25,106.431,± 49.345,ms/op
+FileIO (ReadingFile) developer,testLowEfficiencyFileIO,avgt,25,11.854,± 0.945,ms/op
+BankAccount (ThreadContention),testHighConcurrencyTransfer,thrpt,15,3562.406,± 108.525,ops/ms
+BankAccount (ThreadContention),testMultiThreadTransfer,thrpt,15,3587.345,± 634.980,ops/ms
+BankAccount (ThreadContention),testSingleThreadTransfer,thrpt,15,44581.742,± 22.637,ops/ms
+BankAccount (ThreadContention) deepseek,testHighConcurrencyTransfer,thrpt,15,4743.071,± 537.271,ops/ms
+BankAccount (ThreadContention) deepseek,testMultiThreadTransfer,thrpt,15,5049.692,± 1312.762,ops/ms
+BankAccount (ThreadContention) deepseek,testSingleThreadTransfer,thrpt,15,26215.019,± 247.257,ops/ms
+BankAccount (ThreadContention) developer,testHighConcurrencyTransfer,thrpt,15,7460.671,± 263.487,ops/ms
+BankAccount (ThreadContention) developer,testMultiThreadTransfer,thrpt,15,8179.895,± 324.856,ops/ms
+BankAccount (ThreadContention) developer,testSingleThreadTransfer,thrpt,15,25458.585,± 28.067,ops/ms

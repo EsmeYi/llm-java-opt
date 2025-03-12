@@ -1,0 +1,63 @@
+package main;
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class BankAccount {
+
+    public static class Account {
+        private final Object lock = new Object();
+        private int balance;
+
+        public Account(int initialBalance) {
+            this.balance = initialBalance;
+        }
+
+        public void transfer(Account target, int amount) {
+            Account first = this.hashCode() < target.hashCode() ? this : target;
+            Account second = this.hashCode() < target.hashCode() ? target : this;
+
+            synchronized (first.lock) {
+                synchronized (second.lock) {
+                    if (this.balance >= amount) {
+                        this.balance -= amount;
+                        target.balance += amount;
+                    } else {
+                        //
+                    }
+                }
+            }
+        }
+
+        public int getBalance() {
+            return balance;
+        }
+    }
+
+    public static class TransferTask implements Runnable {
+        private final Account[] accounts;
+
+        public TransferTask(Account[] accounts) {
+            this.accounts = accounts;
+        }
+
+        @Override
+        public void run() {
+            Random random = ThreadLocalRandom.current();
+            for (int i = 0; i < 10; i++) {
+                int from = random.nextInt(accounts.length);
+                int to = random.nextInt(accounts.length);
+                if (from != to) {
+                    int amount = random.nextInt(100);
+                    accounts[from].transfer(accounts[to], amount);
+                }
+                try {
+                    Thread.sleep(random.nextInt(10));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+}

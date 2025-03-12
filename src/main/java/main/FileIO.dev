@@ -1,0 +1,31 @@
+package main;
+
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.io.*;
+import java.util.List;
+
+public class FileIO {
+    public static void processFile(String inputFile, String outputFile) {
+        try {
+            Path inputPath = Paths.get(inputFile);
+            Path outputPath = Paths.get(outputFile);
+
+            if (!Files.exists(outputPath)) {
+                Files.createFile(outputPath);
+            }
+
+            List<String> lines = Files.readAllLines(inputPath, StandardCharsets.UTF_8);
+
+            try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
+                int lineNumber = 1;
+                for (String line : lines) {
+                    String outputLine = line.trim() + " [" + lineNumber++ + "]\n";
+                    writer.write(outputLine);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("File processing failed", e);
+        }
+    }
+}

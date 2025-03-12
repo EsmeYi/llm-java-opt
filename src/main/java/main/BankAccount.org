@@ -1,0 +1,59 @@
+package main;
+
+import java.util.Random;
+
+public class BankAccount {
+
+    private static final Object globalLock = new Object();
+
+    public static class Account {
+        private int balance;
+
+        public Account(int initialBalance) {
+            this.balance = initialBalance;
+        }
+
+        public void transfer(Account target, int amount) {
+            synchronized (globalLock) {
+                if (this.balance >= amount) {
+                    this.balance -= amount;
+                    target.balance += amount;
+                } else {
+                    //
+                }
+            }
+        }
+
+        public int getBalance() {
+            return balance;
+        }
+    }
+
+    public static class TransferTask implements Runnable {
+        private final Account[] accounts;
+        private final Random random;
+
+        public TransferTask(Account[] accounts) {
+            this.accounts = accounts;
+            this.random = new Random();
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                int from = random.nextInt(accounts.length);
+                int to = random.nextInt(accounts.length);
+                if (from != to) {
+                    int amount = random.nextInt(100);
+                    accounts[from].transfer(accounts[to], amount);
+                }
+                try {
+                    Thread.sleep(random.nextInt(50));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+}

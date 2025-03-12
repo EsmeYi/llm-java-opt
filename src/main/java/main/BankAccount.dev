@@ -1,0 +1,79 @@
+package main;
+
+import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class BankAccount {
+
+    public static class Account {
+        private final ReentrantLock lock = new ReentrantLock();
+        private int balance;
+
+        public Account(int initialBalance) {
+            this.balance = initialBalance;
+        }
+
+        public boolean tryLockBoth(Account target) {
+            while (true) {
+                boolean firstLocked = this.lock.tryLock();
+                boolean secondLocked = target.lock.tryLock();
+                
+                if (firstLocked && secondLocked) {
+                    return true;
+                }
+
+                if (firstLocked) this.lock.unlock();
+                if (secondLocked) target.lock.unlock();
+
+                Thread.yield();
+            }
+        }
+
+        public void transfer(Account target, int amount) {
+            if (this == target || amount <= 0) return;
+
+            if (tryLockBoth(target)) {
+                try {
+                    if (this.balance >= amount) {
+                        this.balance -= amount;
+                        target.balance += amount;
+                    }
+                } finally {
+                    this.lock.unlock();
+                    target.lock.unlock();
+                }
+            }
+        }
+
+        public int getBalance() {
+            return balance;
+        }
+    }
+    public static class TransferTask implements Runnable {
+        private final Account[] accounts;
+        private final Random random;
+
+        public TransferTask(Account[] accounts) {
+            this.accounts = accounts;
+            this.random = new Random();
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                int from = random.nextInt(accounts.length);
+                int to = random.nextInt(accounts.length);
+                if (from != to) {
+                    int amount = random.nextInt(100);
+                    accounts[from].transfer(accounts[to], amount);
+                }
+                try {
+                    Thread.sleep(random.nextInt(50));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
